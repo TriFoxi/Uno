@@ -6,11 +6,13 @@ player2deck = []
 
 colors = ["blue", "red", "pink", "green"] 
 numbers = ["0","1","2","3","4","5","6","7","8","9"]
+specials = ["+2", "+4", "Reverse", "Change Color", "Block"]
 deck = ["blue 1", "blue 2", "blue 3", "blue 4", "blue 5", "blue 6", "blue 7", "blue 8", "blue 9",
         "red 1", "red 2", "red 3", "red 4", "red 5", "red 6", "red 7", "red 8", "red 9",
         "green 1", "green 2", "green 3", "green 4", "green 5", "green 6", "green 7", "green 8", "green 9",
         "pink 1", "pink 2", "pink 3", "pink 4", "pink 5", "pink 6", "pink 7", "pink 8", "pink 9",
-        ] #list of cards, eg: uno cards: |blue 1|. I'll do it later
+        "blue +2", "blue +2", "red +2", "red +2", "green +2", "green +2", "pink +2", "pink +2"
+        ] #add specials
 
 def draw(player):
     card = ""
@@ -37,25 +39,47 @@ def play(player, card, previous):
     else:
         c = card.split(" ")[0]
         n = card.split(" ")[1]
-    
-        if n in numbers:
-            special = False
-        else:
-            special = True
 
-        if special:
-            print("Special Card") #Add special functions eg: wildcard/+4/+2
+        if n in specials:
+            specialCol = True
         else:
-            if n == np or c == cp:
-                print("Correct card!")
-                if player == "1":
-                    player1deck.remove(card)
-                if player == "2":
-                    player2deck.remove(card)
-                playend = True
-            else:
-                print("Invalid card. The last card was: " + previous)
-                print("Try again") 
+            specialCol = False
+
+        if n == np or c == cp or c == "Wild":
+            print("Correct card!")
+            if player == "1":
+                player1deck.remove(card)
+            if player == "2":
+                player2deck.remove(card)
+            if specialCol == True:
+                SpecialCol(n, player)
+            playend = True
+        else:
+            print("Invalid card. The last card was: " + previous)
+            print("Try again") 
+
+def SpecialCol(card, player):
+    if card == "+2":
+        if player == "1":
+            print("HAHA! Player 2 must now draw 2 cards. Drawing...")
+            sleep(2)
+            draw("2")
+            draw("2")
+            show("2")
+        else:
+            print("HAHA! Player 1 must now draw 2 cards. Drawing...")
+            sleep(2)
+            draw("1")
+            draw("1")
+            show("1")
+    elif card == "+4":
+        pass #Pickup 4
+    elif card == "Reverse":
+        pass #Switch Direction
+    elif card == "Change Color":
+        pass #Change color
+    elif card == "Block":
+        pass #Block turn
 
 def show(player):
     print("EVERYONE LOOK AWAY EXCEPT FROM THE PLAYER")
@@ -130,7 +154,7 @@ def main():
                     print("You can't play any cards. Drawing...")
                     draw("1")
                     sleep(2)
-                    show("2")
+                    show("1")
                     p1 = False
 
         for i in range(0,100):
