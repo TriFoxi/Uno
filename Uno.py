@@ -6,13 +6,14 @@ player2deck = []
 
 colors = ["blue", "red", "pink", "green"] 
 numbers = ["0","1","2","3","4","5","6","7","8","9"]
-specials = ["+2", "+4", "Reverse", "Change Color", "Block"]
+specials = ["+2", "+4", "Reverse", "ChangeColor", "Block"]
 deck = ["blue 1", "blue 2", "blue 3", "blue 4", "blue 5", "blue 6", "blue 7", "blue 8", "blue 9",
         "red 1", "red 2", "red 3", "red 4", "red 5", "red 6", "red 7", "red 8", "red 9",
         "green 1", "green 2", "green 3", "green 4", "green 5", "green 6", "green 7", "green 8", "green 9",
         "pink 1", "pink 2", "pink 3", "pink 4", "pink 5", "pink 6", "pink 7", "pink 8", "pink 9",
         "blue +2", "blue +2", "red +2", "red +2", "green +2", "green +2", "pink +2", "pink +2",
         "blue +4", "blue +4", "red +4", "red +4", "green +4", "green +4", "pink +4", "pink +4"
+        "Wild ChangeColor", "Wild ChangeColor", "Wild ChangeColor", "Wild ChangeColor", "Wild ChangeColor", "Wild ChangeColor", "Wild ChangeColor", "Wild ChangeColor",
         ] #add specials
 
 def draw(player):
@@ -46,15 +47,18 @@ def play(player, card, previous):
         else:
             specialCol = False
 
-        if n == np or c == cp or c == "Wild":
-            print("Correct card!")
-            if player == "1":
-                player1deck.remove(card)
-            if player == "2":
-                player2deck.remove(card)
-            if specialCol == True:
+        if n == np or c == cp or n == "Wild" or c == "Wild":
+            print("Playing card...")
+            if n == "Wild":
+                pass
+            elif specialCol == True:
                 SpecialCol(n, player)
+            elif player == "1":
+                player1deck.remove(card)
+            elif player == "2":
+                player2deck.remove(card)
             playend = True
+            return card
         else:
             print("Invalid card. The last card was: " + previous)
             print("Try again") 
@@ -92,8 +96,18 @@ def SpecialCol(card, player):
             show("1")
     elif card == "Reverse":
         pass #Switch Direction
-    elif card == "Change Color":
-        pass #Change color
+    elif card == "ChangeColor":
+        x = True
+        while x:
+            print("You get to change the color!")
+            print("Choose Blue, Red, Green or Pink")
+            i = input(">>>")
+            if i.lower() in colors:
+                x = False
+                card = i.lower() + " Wild"
+                play(player, card, card)
+            else:
+                x = True
     elif card == "Block":
         pass #Block turn
 
@@ -160,7 +174,7 @@ def main():
                     card = input(">>>")
                     if card in player1deck:
                         print("You have this card, playing...")
-                        play("1", card, previous)
+                        playOut = play("1", card, previous)
                         sleep(2)
                         if playend == True:
                             p1 = False
@@ -175,7 +189,10 @@ def main():
 
         for i in range(0,100):
             print("")
-        previous = card            
+        try:
+            previous = playOut
+        except:
+            previous = previous
         #check p1 isn't on 0 cards
         if len(player1deck) <= 0:
             run = False
@@ -200,7 +217,7 @@ def main():
                         card = input(">>>")
                         if card in player2deck:
                             print("You have this card, playing...")
-                            play("2", card, previous)
+                            playOut = play("2", card, previous)
                             sleep(2)
                             if playend == True:
                                 p2 = False
@@ -215,7 +232,7 @@ def main():
 
         for i in range(0,100):
             print("")
-        previous = card          
+        previous = playOut          
         #check p2 isn't on 0 cards
         if len(player2deck) <= 0:
             run = False
