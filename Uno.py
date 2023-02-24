@@ -11,7 +11,8 @@ deck = ["blue 1", "blue 2", "blue 3", "blue 4", "blue 5", "blue 6", "blue 7", "b
         "red 1", "red 2", "red 3", "red 4", "red 5", "red 6", "red 7", "red 8", "red 9",
         "green 1", "green 2", "green 3", "green 4", "green 5", "green 6", "green 7", "green 8", "green 9",
         "pink 1", "pink 2", "pink 3", "pink 4", "pink 5", "pink 6", "pink 7", "pink 8", "pink 9",
-        "blue +2", "blue +2", "red +2", "red +2", "green +2", "green +2", "pink +2", "pink +2"
+        "blue +2", "blue +2", "red +2", "red +2", "green +2", "green +2", "pink +2", "pink +2",
+        "blue +4", "blue +4", "red +4", "red +4", "green +4", "green +4", "pink +4", "pink +4"
         ] #add specials
 
 def draw(player):
@@ -73,7 +74,22 @@ def SpecialCol(card, player):
             draw("1")
             show("1")
     elif card == "+4":
-        pass #Pickup 4
+        if player == "1":
+            print("HAHA! Player 2 must now draw 4 cards. Drawing...")
+            sleep(2)
+            draw("2")
+            draw("2")
+            draw("2")
+            draw("2")
+            show("2")
+        else:
+            print("HAHA! Player 1 must now draw 4 cards. Drawing...")
+            sleep(2)
+            draw("1")
+            draw("1")
+            draw("1")
+            draw("1")
+            show("1")
     elif card == "Reverse":
         pass #Switch Direction
     elif card == "Change Color":
